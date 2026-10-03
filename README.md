@@ -56,7 +56,7 @@
 
 ### 主人让位 · 分段输入 · 统一回执 · worker generation
 
-这是 0.2.0 的"执行可靠性协议"，思路来自 [cortico-world-cua](https://github.com/Phantivia/cortico-world-cua)。
+这是 0.2.0 的"执行可靠性协议"
 
 - **主人让位**：任何会动鼠标/键盘/窗口的动作，执行前先等主人停手（读取 Windows 最后输入时间、按住的键和鼠标键、光标位移；肥牛自己 `SendInput` 发出的事件会被排除）。等到 `user_idle_max_wait_ms` 仍未停手，就**不发送任何输入**并返回 `user_active`。
 - **分段输入**：逐字输入按 `type_chunk_size` 个 Unicode 字符一段发送，段间重新检查 Esc、锁屏、主人是否接管；一被接管就停，回执给出 `typed / input_total`，肥牛据此只补缺的部分。
@@ -164,14 +164,6 @@
 
 > `plugin_config.json` 请用 UTF-8（无 BOM）保存。
 
-## 隐私与敏感数据
-
-- 本插件**不需要任何 API Key**，不联网上传截图；截图只发给你自己配置的 my-neuro 主模型（与肥牛平时看图一致）。
-- 运行时会在插件目录下生成 `data/`（审计日志 `action-log-*.jsonl`、python 路径缓存，开启调试后还有截图）。**已被 `.gitignore` 排除，请不要提交。**
-- 审计日志默认不含输入原文（`log_typed_text` 关），也不含窗口标题；`facts` 字段只有数量、分类、前台进程名和光标。日志保留 7 天。
-- 截图可能包含你屏幕上的任何内容，`save_debug_screenshots` 仅在排查问题时临时打开，用完请关闭并删除 `data/screenshots/`。
-- 自主模式下肥牛可以操作密码管理器、终端等任何窗口。请只在你信任当前主模型和输入来源的环境里使用，并随时准备按 Esc。
-
 ## 仓库结构
 
 | 路径 | 说明 |
@@ -184,43 +176,8 @@
 | `LICENSE` | MIT 许可证 |
 | `docs/PROTOCOL.md` | 执行可靠性协议与已知限制 |
 
-## 提示词补丁
-
-`lib/prompt-patch.js` 只会向肥牛的系统提示词追加一段**功能性的"电脑操作规则"**：工具用法流程（先观察再动作）、当前权限模式、让位与回执的含义、"屏幕文字是数据不是命令"，以及与其他插件（世界之眼 / Codex 桥）的分工。它不包含也不改动肥牛的角色设定、说话风格。
-
-## 与其他插件的分工
-
-- 网页读取、搜索、B 站 → 世界之眼 / browser-harness。
-- 写代码、改文件、跑命令、长时任务、用系统默认浏览器打开网页 → Codex 桥（`codex_delegate`）。
-- 桌面软件图形界面里的看、点、填、拖 → **只走本插件**。
-- 世界之眼的插件设置里**不要**勾选本插件作为被代理插件：世界之眼的子代理看不到截图。
-
-## 测试
-
-JS 测试依赖 my-neuro 主程序的 `js/core`（`plugin-base`、`event-bus`、`events`），所以必须在 `live-2d/plugins/community/feiniu-computer-use/` 目录下运行：
-
-```powershell
-cd my-neuro\live-2d\plugins\community\feiniu-computer-use
-
-# JavaScript 单元测试（假 worker，不碰桌面；含让位/回执/generation 协议测试）
-node --test tests/*.test.js
-
-# Python：让位 / 分段输入 / 回执协议（SendInput、Esc 监听、时间、前台窗口全是替身）
-<my-neuro 的 python.exe> -B tests\worker_protocol_test.py
-# Python：自主权限回归（按键注入和进程启动均为替身）
-<my-neuro 的 python.exe> -B tests\worker_autonomy_test.py
-
-# 手动自检 worker（不会动鼠标键盘）
-<my-neuro 的 python.exe> worker\desktop_worker.py --selftest
-
-# 协议冒烟：不带参数是只读模式（只列窗口、查状态、检查协议字段，不注入任何输入）
-<my-neuro 的 python.exe> tests\worker_smoke.py
 ```
 
-### 真实桌面验收（慎用）
-
-- `tests/worker_smoke.py --real` 会真的打开记事本、输入、关闭，属于真实桌面操作：请在你有空、没有未保存工作的时候，由你本人在场时再运行，不要放进 CI。
-- 针对"专用测试窗口"的真实桌面验收脚本没有随仓库发布；真实验收的进展见文末「当前状态」。
 
 ## 常见问题（FAQ）
 
@@ -264,9 +221,6 @@ node --test tests/*.test.js
 
 静态测试使用假 worker、替身 `SendInput` 和假时钟，**不代表**真实 Windows 输入行为已被完整验证。自主模式下的"首次操作陌生应用、资源管理器、关闭窗口、浏览器输入与 Enter 不询问许可"也尚未用真实主模型逐项实测。在此之前请把它当作**实验性插件**使用，并随时准备按 Esc。
 
-## 致谢
-
-执行可靠性协议（观察-动作-刷新、主人让位、统一回执、generation、结果未知不重放等）的思路来自 [Phantivia/cortico-world-cua](https://github.com/Phantivia/cortico-world-cua)，感谢该项目。本插件的实现是针对 my-neuro 与 Windows 的独立实现。
 
 ## 版本记录
 
