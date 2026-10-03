@@ -1,6 +1,6 @@
 # 执行可靠性协议（让位 / 分段输入 / 回执 / generation）
 
-本文描述 `feiniu-computer-use` 0.2.0 的代码实际做的事。协议思路参考 [cortico-world-cua](https://github.com/Phantivia/cortico-world-cua)。
+本文描述 `feiniu-computer-use` 0.2.0 的代码实际做的事。
 
 > 验收状态见 README 末尾「当前状态」：静态测试已通过；真实桌面只观察过"空闲时动作 / 分段输入计数 / 重启后不重放 / 重复动作防护 / 越界坐标"；"主人动鼠标或按键时让位、长文本中途接管、Esc、锁屏"仍只有静态测试证据。
 
