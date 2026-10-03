@@ -1,0 +1,10 @@
+{
+  "name": "feiniu-computer-use",
+  "displayName": "肥牛电脑操作",
+  "version": "0.2.0",
+  "author": "my-neuro",
+  "description": "让肥牛看屏幕、找窗口、点击、输入、按键、滚动、拖拽，操作 Windows 桌面软件。默认完全自主控制，无需逐次询问授权；保留观察-动作-刷新、Esc 停止和动作上限。可关闭自主模式恢复按应用分级确认。请勿在世界之眼中代理本插件。",
+  "framework_version": ">=1.0.0",
+  "main": "index.js",
+  "lang": "js"
+}

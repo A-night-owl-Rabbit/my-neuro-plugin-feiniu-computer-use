@@ -1,0 +1,317 @@
+{
+  "enabled": {
+    "title": "启用插件",
+    "description": "是否启用肥牛电脑操作插件。关闭后所有 computer_* 工具消失。",
+    "type": "bool",
+    "default": true,
+    "value": true
+  },
+  "python_executable": {
+    "title": "Python 路径",
+    "description": "conda my-neuro 环境里 python.exe 的完整路径，例如 C:\\path\\to\\envs\\my-neuro\\python.exe。留空则启动时自动解析并缓存到 data/python-path.json。",
+    "type": "string",
+    "default": "",
+    "value": ""
+  },
+  "conda_env_name": {
+    "title": "conda 环境名",
+    "description": "自动解析 Python 路径时使用的 conda 环境名。",
+    "type": "string",
+    "default": "my-neuro",
+    "value": "my-neuro"
+  },
+  "worker_startup_timeout_ms": {
+    "title": "worker 启动超时（毫秒）",
+    "description": "等待桌面 worker 完成握手的最长时间。",
+    "type": "int",
+    "default": 20000,
+    "value": 20000
+  },
+  "action_timeout_ms": {
+    "title": "单个动作超时（毫秒）",
+    "description": "点击、输入、按键等单个动作的最长等待时间；超时会重启 worker。",
+    "type": "int",
+    "default": 15000,
+    "value": 15000
+  },
+  "observe_timeout_ms": {
+    "title": "单次观察超时（毫秒）",
+    "description": "截图 + 读取界面元素树的最长等待时间。",
+    "type": "int",
+    "default": 20000,
+    "value": 20000
+  },
+  "post_action_settle_ms": {
+    "title": "动作后等待（毫秒）",
+    "description": "动作执行完到自动重新观察之间的等待，给界面留出刷新时间。",
+    "type": "int",
+    "default": 400,
+    "value": 400
+  },
+  "observation_max_age_ms": {
+    "title": "观察有效期（毫秒）",
+    "description": "一次观察超过这个时间就不能再据此点击/输入，必须重新观察。",
+    "type": "int",
+    "default": 90000,
+    "value": 90000
+  },
+  "max_actions_per_turn": {
+    "title": "每回合动作上限",
+    "description": "主人一句话里肥牛最多执行多少个桌面动作，防止失控循环。达到上限后肥牛会如实汇报进度。",
+    "type": "int",
+    "default": 25,
+    "value": 25
+  },
+  "screenshot_max_long_edge": {
+    "title": "截图长边像素",
+    "description": "交给模型的截图长边尺寸（640～2560）。越大越清楚也越费 token。",
+    "type": "int",
+    "default": 1600,
+    "value": 1600
+  },
+  "screenshot_jpeg_quality": {
+    "title": "截图 JPEG 质量",
+    "description": "45～95。",
+    "type": "int",
+    "default": 80,
+    "value": 80
+  },
+  "ui_tree_default_depth": {
+    "title": "界面元素树默认深度",
+    "description": "computer_observe 未指定 tree_depth 时使用的深度。",
+    "type": "int",
+    "default": 3,
+    "value": 3
+  },
+  "ui_tree_max_chars": {
+    "title": "元素树文本上限（字符）",
+    "description": "返回给模型的元素树文本最大长度，超出截断。",
+    "type": "int",
+    "default": 6000,
+    "value": 6000
+  },
+  "document_text_max_chars": {
+    "title": "文档文本上限（字符）",
+    "description": "从输入框/文档里读回的文字最大长度。",
+    "type": "int",
+    "default": 2000,
+    "value": 2000
+  },
+  "trusted_input_sources": {
+    "title": "允许的主人来源",
+    "description": "只有这些来源的消息能触发电脑操作。默认 text,voice（本地文字和语音）。弹幕、QQ 等永远不行。",
+    "type": "string",
+    "default": "text,voice",
+    "value": "text,voice"
+  },
+  "autonomous_control": {
+    "title": "完全自主控制（无需询问授权）",
+    "description": "默认开启：所有应用均可操作，可信主动回合也可使用；首次操作、启动程序、输入、提交、关闭和删除均不再逐次询问。覆盖下方旧的应用分级、禁止名单和确认开关，支持 Win 键。Esc 停止、截图有效性、来源识别、动作上限和系统本身的权限限制仍然有效。关闭后恢复原有分级确认模式。",
+    "type": "bool",
+    "default": true,
+    "value": true
+  },
+  "allow_proactive_control": {
+    "title": "允许肥牛主动回合操作电脑",
+    "description": "仅关闭完全自主控制时生效。打开后肥牛的可信主动聊天/心情回合也能操作电脑，仅限下面列出的应用。自主模式始终允许可信主动回合。",
+    "type": "bool",
+    "default": false,
+    "value": false
+  },
+  "proactive_allowed_apps": {
+    "title": "主动回合允许的应用",
+    "description": "仅关闭完全自主控制时生效。进程名列表（逗号分隔），例如 notepad.exe,mspaint.exe。留空表示不限。",
+    "type": "string",
+    "default": "",
+    "value": ""
+  },
+  "confirm_first_use_per_app": {
+    "title": "首次操作某应用先问主人",
+    "description": "仅关闭完全自主控制时生效。本次会话第一次对某个软件点击/输入前，先生成待确认动作请主人同意。",
+    "type": "bool",
+    "default": true,
+    "value": true
+  },
+  "always_allowed_apps": {
+    "title": "免确认的应用",
+    "description": "仅关闭完全自主控制时生效。这些进程不需要首次确认。逗号分隔，例如 notepad.exe,mspaint.exe,calc.exe。",
+    "type": "string",
+    "default": "notepad.exe,mspaint.exe,calc.exe",
+    "value": "notepad.exe,mspaint.exe,calc.exe"
+  },
+  "denied_apps": {
+    "title": "额外禁止的应用",
+    "description": "仅关闭完全自主控制时生效。在内置禁区（终端、安全工具、登录框、密码管理器、肥牛自己）之外，再禁止这些进程。逗号分隔。",
+    "type": "string",
+    "default": "",
+    "value": ""
+  },
+  "app_tier_overrides": {
+    "title": "按应用改分级",
+    "description": "仅关闭完全自主控制时生效。格式 进程名=分级;进程名=分级，可选 full、click_only、view_only、confirm_each、deny。例如 Code.exe=full;chrome.exe=click_only。分级模式的内置禁区不能用此项放开。",
+    "type": "string",
+    "default": "",
+    "value": ""
+  },
+  "browser_tier": {
+    "title": "浏览器分级",
+    "description": "仅关闭完全自主控制时生效。浏览器窗口的默认分级：full / click_only / view_only。网页内容读取优先走世界之眼或浏览器插件。",
+    "type": "string",
+    "default": "full",
+    "value": "full"
+  },
+  "require_confirm_for_typing": {
+    "title": "输入文字前先确认",
+    "description": "仅关闭完全自主控制时生效。打开后输入文字和直接替换输入框内容都先请主人确认。",
+    "type": "bool",
+    "default": false,
+    "value": false
+  },
+  "require_confirm_for_enter": {
+    "title": "浏览器里按 Enter 先确认",
+    "description": "仅关闭完全自主控制时生效。在浏览器窗口按 Enter 可能提交表单或发送消息，打开后先确认。",
+    "type": "bool",
+    "default": true,
+    "value": true
+  },
+  "unicode_input_mode": {
+    "title": "文字输入方式",
+    "description": "sendinput：逐字模拟键盘输入（默认，不占用剪贴板）；clipboard：先写剪贴板再粘贴（对个别老程序更稳，粘贴后自动还原剪贴板）。",
+    "type": "string",
+    "default": "sendinput",
+    "value": "sendinput"
+  },
+  "esc_watch_window_ms": {
+    "title": "Esc 监听窗口（毫秒）",
+    "description": "每个动作之后多长时间内按 Esc 会中断肥牛的操作。",
+    "type": "int",
+    "default": 15000,
+    "value": 15000
+  },
+  "user_activity_threshold_px": {
+    "title": "主人动鼠标判定阈值（像素）",
+    "description": "两次动作之间光标被移动超过这个距离，就判定主人在用电脑，肥牛暂停。",
+    "type": "int",
+    "default": 40,
+    "value": 40
+  },
+  "user_idle_yield": {
+    "title": "动手前先等主人停手（让位）",
+    "description": "默认开启：点击、拖动、滚动、按键、输入、切换窗口和启动程序之前，若检测到主人刚碰过键盘/鼠标，最多等待“最长让位等待”这么久；等不到就不发送任何输入并如实回报（不是故障）。关闭后只保留动作间鼠标位移检测。修改后立即生效，无需重启。",
+    "type": "bool",
+    "default": true,
+    "value": true
+  },
+  "user_idle_ms": {
+    "title": "主人静止多久才动手（毫秒）",
+    "description": "100～5000。主人最后一次操作键盘/鼠标距今不足这个时间，就算“正在操作”。肥牛自己发出的输入不会算在内。",
+    "type": "int",
+    "default": 500,
+    "value": 500
+  },
+  "user_idle_max_wait_ms": {
+    "title": "最长让位等待（毫秒）",
+    "description": "0～30000。等主人停手的最长时间，超过就放弃本次动作并返回“主人正在操作”。0 表示不等待、立刻让位。",
+    "type": "int",
+    "default": 3000,
+    "value": 3000
+  },
+  "type_chunk_size": {
+    "title": "输入分段大小（字）",
+    "description": "1～200。逐字输入模式下每段发送多少个 Unicode 字符；每段之间检查主人是否接管、Esc、锁屏。剪贴板模式一次粘贴，不能分段。",
+    "type": "int",
+    "default": 16,
+    "value": 16
+  },
+  "type_chunk_gap_ms": {
+    "title": "输入分段间隔（毫秒）",
+    "description": "0～1000。两段之间的停顿，同时是检查主人是否接管的窗口；太小会检测不到键盘接管。",
+    "type": "int",
+    "default": 100,
+    "value": 100
+  },
+  "banner_mode": {
+    "title": "操作提示方式",
+    "description": "top：屏幕顶部正中常驻气泡条“肥牛正在使用电脑中”，随步骤更新，回合结束淡出；subtitle：旧方式，每个动作前用说话字幕闪一下；off：不提示。",
+    "type": "string",
+    "default": "top",
+    "value": "top"
+  },
+  "banner_theme": {
+    "title": "气泡条主题",
+    "description": "pink：和思考气泡同款的粉色气泡风；dark：Codex 风格的半透明深色胶囊。",
+    "type": "string",
+    "default": "pink",
+    "value": "pink"
+  },
+  "banner_show_step": {
+    "title": "气泡条显示当前步骤",
+    "description": "在“肥牛正在使用电脑中”后面显示当前这一步（例如“正在启动 记事本”“输入文字（8 字）”）。输入的原文永远不会显示。",
+    "type": "bool",
+    "default": true,
+    "value": true
+  },
+  "banner_esc_hint": {
+    "title": "气泡条显示“按 Esc 停止”",
+    "description": "在气泡条右侧显示停止方式提示。",
+    "type": "bool",
+    "default": true,
+    "value": true
+  },
+  "banner_offset_top": {
+    "title": "气泡条距屏幕顶端距离",
+    "description": "单位是 CSS 像素（150% 缩放下 12 相当于 18 个物理像素）。",
+    "type": "int",
+    "default": 12,
+    "value": 12
+  },
+  "banner_scale": {
+    "title": "气泡条缩放",
+    "description": "整体放大或缩小，范围 0.6～2.0。",
+    "type": "float",
+    "default": 1.0,
+    "value": 1
+  },
+  "banner_linger_ms": {
+    "title": "回合结束后气泡条停留（毫秒）",
+    "description": "肥牛说完最终回复后，气泡条再停留多久才淡出，让主人看清最后一步。",
+    "type": "int",
+    "default": 1500,
+    "value": 1500
+  },
+  "banner_idle_timeout_ms": {
+    "title": "气泡条空闲自动收起（毫秒）",
+    "description": "兜底：这么久没有任何电脑操作就自动收起，防止回合出错时气泡条挂在屏幕上。",
+    "type": "int",
+    "default": 90000,
+    "value": 90000
+  },
+  "webui_tool_log_detail": {
+    "title": "WebUI 工具日志详细度",
+    "description": "summary 只记阶段摘要；full 额外记录动作参数和返回值（已脱敏）。",
+    "type": "string",
+    "default": "summary",
+    "value": "summary"
+  },
+  "log_typed_text": {
+    "title": "审计日志记录输入原文",
+    "description": "默认只记录输入了多少字。打开后 data/ 下的审计日志会保存输入的原文。",
+    "type": "bool",
+    "default": false,
+    "value": false
+  },
+  "save_debug_screenshots": {
+    "title": "保存调试截图",
+    "description": "把每次观察的截图保存到 data/screenshots/，排查坐标问题时用，平时关闭。",
+    "type": "bool",
+    "default": false,
+    "value": false
+  },
+  "verbose_log": {
+    "title": "详细日志",
+    "description": "在终端日志里输出 worker 的 stderr 等调试信息。",
+    "type": "bool",
+    "default": false,
+    "value": false
+  }
+}
