@@ -117,7 +117,6 @@
 - 你动鼠标超过阈值时变灰「你在动鼠标，肥牛先停一下」；按 Esc 或她自己停手时变淡红「肥牛已停手」，约 2 秒后消失。
 - 提示条在肥牛自己看的截图里不会出现，也不会挡住鼠标（`pointer-events: none`）。
 - 可在设置里改成深色胶囊（`banner_theme=dark`）、旧的底部字幕（`banner_mode=subtitle`）或完全关闭（`off`）。窗口偶尔失去置顶时按 **Ctrl+T** 强制置顶。多显示器只保证主屏看得到。
-
 ## 配置说明
 
 在 WebUI「插件设置 → 肥牛电脑操作」里修改，或直接编辑 `plugin_config.json` 里各项的 `value` 字段。仓库里附带的 `plugin_config.json` 全部是出厂默认值。
@@ -175,8 +174,6 @@
 | `tests/` | 自动化测试（假 worker / 替身 SendInput / 假时钟，不碰真实桌面） |
 | `LICENSE` | MIT 许可证 |
 | `docs/PROTOCOL.md` | 执行可靠性协议与已知限制 |
-
-```
 
 
 ## 常见问题（FAQ）
